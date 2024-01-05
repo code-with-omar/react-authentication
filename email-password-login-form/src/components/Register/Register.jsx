@@ -1,5 +1,9 @@
 import { useState } from "react";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import app from "../../firebase/firebase.config";
 
+
+const auth = getAuth(app);
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -11,14 +15,23 @@ const Register = () => {
     // Way Two : Apply onBlue event handler
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
-        console.log(event.target.value)
+        // console.log(event.target.value);
     }
     // way number three: onSubmit
-    const handleSubmitForm=(event)=>{
+    const handleSubmitForm = (event) => {
         event.preventDefault()
-        const email=event.target.email.value;
-        const password=event.target.password.value;
-        console.log({email,password})
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        // console.log({email,password});
+        //Note: Firebase createUserWithEmailAndPassword authentication
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(userCredential => {
+                const user = userCredential.user;
+                console.log(user);
+            }).catch(error => {
+                console.error(error);
+            })
+
     }
     return (
         <div style={{ textAlign: "center" }}>
