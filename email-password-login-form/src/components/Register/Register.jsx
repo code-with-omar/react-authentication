@@ -11,7 +11,7 @@ const Register = () => {
     // Error message
     const [error, setError] = useState('');
     // Success Message
-    const [success,setSuccess]=useState('');
+    const [success, setSuccess] = useState('');
     // Way One: apply onchange handler
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -28,11 +28,28 @@ const Register = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
         // console.log({email,password});
+
+        //Validation
+        if (!/(?=.*[A-Z])/.test(password)) {
+            setError('Please add at least One uppercase');
+            return;
+        } else if (!/(?=.*[a-z])/.test(password)) {
+            setError('Please add at least one lowercase');
+            return;
+        } else if (!/(?=.*[0-9])/.test(password)) {
+            setError('Please add at least one digit');
+            return;
+        } else if (password.length < 6) {
+            setError('Please password at least 6 digits');
+            return;
+        }
+
         //Note: Firebase createUserWithEmailAndPassword authentication
         createUserWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log(user);
+                // if user auth create then setSuccess state and error make empty
                 setSuccess('Create user has been successfull');
                 setError('')
             }).catch(error => {
