@@ -8,6 +8,10 @@ const auth = getAuth(app);
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // Error message
+    const [error, setError] = useState('');
+    // Success Message
+    const [success,setSuccess]=useState('');
     // Way One: apply onchange handler
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -19,6 +23,7 @@ const Register = () => {
     }
     // way number three: onSubmit
     const handleSubmitForm = (event) => {
+        setSuccess('')
         event.preventDefault()
         const email = event.target.email.value;
         const password = event.target.password.value;
@@ -28,8 +33,12 @@ const Register = () => {
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log(user);
+                setSuccess('Create user has been successfull');
+                setError('')
             }).catch(error => {
                 console.error(error);
+                const errorMessage = error.message;
+                setError(errorMessage)
             })
 
     }
@@ -41,6 +50,8 @@ const Register = () => {
                 <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder="Your Email" /> <br />
                 <input onBlur={handlePasswordChange} type="password" name="password" id="password" placeholder="Your password" /> <br />
                 <input type="submit" value="register" />
+                <p>{error}</p>
+                <p>{success}</p>
             </form>
         </div>
     );
