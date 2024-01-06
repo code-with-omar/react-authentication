@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
 import app from "../../firebase/firebase.config";
 import { Link } from "react-router-dom";
 
@@ -53,6 +53,11 @@ const Register = () => {
                 console.log(user);
                 // if user auth create then setSuccess state and error make empty
                 setSuccess('Create user has been successfull');
+
+                // Email Verification 
+                emailVerification(user);
+
+                // Make empty form
                 event.target.reset()
                 setError('')
             }).catch(error => {
@@ -62,14 +67,24 @@ const Register = () => {
             })
 
     }
+    //Email validation function
+    const emailVerification = (user) => {
+        sendEmailVerification(user)
+            .then(() => {
+                alert('Please Email validation')
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
     return (
         <div style={{ textAlign: "center" }}>
             <h2>This is register page</h2>
             {/* {Way number 3: use onSubmit event handler} */}
             <form onSubmit={handleSubmitForm}>
-                <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder="Your Email" required/> <br />
+                <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder="Your Email" required /> <br />
                 <input onBlur={handlePasswordChange} type="password" name="password" id="password" placeholder="Your password" /> <br />
-                <input type="submit" value="register" required/>
+                <input type="submit" value="register" required />
                 <p>{error}</p>
                 <p>{success}</p>
             </form>
