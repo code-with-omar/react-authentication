@@ -3,7 +3,10 @@ import { UserContext } from '../Provider/UserProviders';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-    const { user } = useContext(UserContext);
+    const { user,userLoding } = useContext(UserContext);
+    if(userLoding){
+       return <h2>Waiting</h2>
+    }
     if (user) {
         return children;
     }
