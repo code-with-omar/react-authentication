@@ -39,9 +39,9 @@ const UserProviders = ({ children }) => {
             // console.log('auth state change', currentUser);
             setUser(currentUser)
         });
-        // return () => {
-        //     unsubscribe;
-        // }
+        return () => {
+            unsubscribe;
+        }
     }, [])
     const userInfo = {
         user,
